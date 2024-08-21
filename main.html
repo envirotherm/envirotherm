@@ -477,35 +477,8 @@
 									
 									
 								</div> <!-- row -->
-
-								<div class = "row">
+								<!-- row, Transmission Load - Account for Walls Header Inputs -->
 								
-									<div class = "col-md-4">
-									
-										<label for = "object_detection_value"><h6 class = "mt-2">Object Detection Value</h6></label>
-										
-									</div>
-									
-									
-									<div class = "col-md-4">
-									
-												
-										<input type = "number" id = "wall_detected_value" class = "form-control wall_detected_value mb-3" placeholder = "Object Detected Value"/>
-									
-									
-									</div>
-
-									<div class = "col-md-4">
-
-										<button type = "button" class = "btn btn-sm btn-success mb-3 use_object_detected_value_for_wall">Use Object Detected Value<br/><span class = "object_detected"></span> (<span class = "object_thermal_coefficient"></span>)</button>
-
-
-									</div>
-								
-									
-								</div>  <!-- row, Transmission Load - Account for Walls Header Inputs -->
-								
-							
 									
 								
 								<div class = "walls_area_content">
@@ -737,7 +710,7 @@
 								
 									<div class = "col-md-4">
 									
-										<label for = "object_detection_value"><h6 class = "mt-2">Object Detection Value</h6></label>
+										<label for = "object_detection_value"><h6 class = "mt-2">Object U-Value</h6></label>
 										
 									</div>
 									
@@ -745,17 +718,25 @@
 									<div class = "col-md-4">
 									
 												
-										<input type = "number" id = "floor_detected_value" class = "form-control floor_detected_value compute_transmission_load_floor mb-3" placeholder = "Object Detected Value"/>
-									
+										<!-- <input type = "number" id = "floor_detected_value" class = "form-control floor_detected_value compute_transmission_load_floor mb-3" placeholder = "Object Detected Value"/> -->
+										<select class = "form-control floor_detected_value compute_transmission_load_floor">
+											<option value = "1.35" class = "kwh_day_transmission_load_floor">(1.35) Cast Concrete</option>
+											<option value = "50" class = "wh_day_transmission_load_floor">(50) Metal Tray (Steel)</option>
+											<option value = "0.41" class = "kwh_transmission_load_floor">(0.41) Screed</option>
+											<option value = "0.18" class = "wh_transmission_load_floor">(0.18) Timber (Hardwood)</option>
+											<option value = "0.13" class = "btu_hr_transmission_load_floor">(0.13) Timber (Softwood, Plywood, Chipboard)</option>
+											<option value = "0.24" class = "btu_hr_transmission_load_floor">(0.24) Ceramic</option>
+											<option value = "0.15" class = "btu_hr_transmission_load_floor">(0.15) Carpet</option>
+										</select>
 									
 									</div>
 
-									<div class = "col-md-4">
+									<!-- <div class = "col-md-4">
 
 										<button type = "button" class = "btn btn-sm btn-success mb-3 use_object_detected_value_for_floor compute_transmission_load_floor">Use Object Detected Value<br/><span class = "object_detected"></span> (<span class = "object_thermal_coefficient"></span>)</button>
 
 
-									</div>
+									</div> -->
 								
 									
 								</div> <!-- row for object detection - Transmission Load - Floor -->
@@ -4113,14 +4094,14 @@
 		
 
 			function event_click_wall_factor_transmission_load(){
-
 				$('.use_object_detected_value_for_wall').on('click',function(){
 
+					var id = $(this).attr('rel');
 					var rel = Number($('.object_thermal_coefficient').html());
 
 					//$('.u_value_input').val(rel);
-					$('.wall_detected_value').val(rel);
-					$('.wall_field_object_detected_value').val(rel);
+					// $('.wall_detected_value').val(rel);
+					$('.wall_field_object_detected_value_'+id).val(rel);
 					
 					var table = "transmission_load_wall_areas";
 					var one_field = "wall_object_detected_value";
@@ -4224,9 +4205,9 @@
 			function event_text_change_wall_factor_transmission_load(){
 
 				$('.wall_detected_value').on('keyup',function(){
-
+					// var id = $(this).attr('rel');
 					var rel = $(this).val();
-
+					console.log(rel)
 					var table = "transmission_load_wall_areas";
 					var one_field = "wall_object_detected_value";
 					var value_string = rel;
@@ -5416,26 +5397,27 @@
 								wall_area_input += '<input type = "text" class = "form-control wall_direction_'+id+'" data-bs-toggle = "modal" data-bs-target = "#modal_direction_select_'+id+'" value = "'+wall_direction+'" placeholder = "Direction" disabled/>';		
 								//wall_area_input += '<div class = "btn bg-secondary text-white" data-bs-toggle = "modal" data-bs-target = "#modal_direction_select_'+id+'"><small>Select Direction</small></div>';
 							
-								wall_area_input += '</div>';
-							
-							wall_area_input += '<div class = "col-md-2 text-left">'
-		
-								wall_area_input += '<small>Object Detection</small>';		
-								
-		
-							wall_area_input += '</div>';
-		
-							wall_area_input += '<div class = "col-md-2">'
-							
-								wall_area_input += '<input type = "number" value = "'+wall_object_detected_value+'" class = "form-control wall_field_object_detected_value my-1" placeholder = "Wall Object Value" disabled = "true">';
-		
 							wall_area_input += '</div>';
 							
 		
 						wall_area_input += '</div>'; // row, WALL OUTSIDE TEMPERATURE, DIRECTION OF WALL, OBJECT DETECTION
 		
 					
+						wall_area_input += '<div style="margin-top:8px;" class = "row">';
+							
+							wall_area_input += '<div style="margin-top:8px;" class = "col-md-4">'
+								wall_area_input += '<h5>Object Detection Value</h5>';									
+							wall_area_input += '</div>';
+							
+							wall_area_input += '<div class = "col-md-4">'
+								wall_area_input += '<input type = "number" id="wall_detected_value" rel = "'+id+'" value = "'+wall_object_detected_value+'" class = "form-control wall_detected_value wall_field_object_detected_value_'+id+' my-1" placeholder = "Object Detection Value">';
+							wall_area_input += '</div>';
+
+							wall_area_input += '<div class = "col-md-4">'
+								wall_area_input += '<button type = "button" rel = "'+id+'" class = " form-control btn btn-sm btn-success use_object_detected_value_for_wall">Use Object Detected Value<br/>(<span class = "object_thermal_coefficient"></span>)</button>';
+							wall_area_input += '</div>';
 		
+						wall_area_input += '</div>';
 							
 							wall_area_input += '<div class = "col-md-1 d-none">';
 								wall_area_input += '<button type = "button" rel = "'+id+'" class = "btn btn-xs btn-warning remove_wall_area my-1">Remove</button>';
@@ -5547,12 +5529,12 @@
 		
 			
 		
-				$('.wall_detected_value').on('keyup change',function(){
+				// $('.wall_detected_value').on('keyup change',function(){
 		
-					var this_val = $(this).val();
-					$('.wall_field_object_detected_value').val(this_val);
+				// 	var this_val = $(this).val();
+				// 	$('.wall_field_object_detected_value').val(this_val);
 		
-				});
+				// });
 				
 				$('.remove_wall_area').on('click',function(){
 			
@@ -5564,6 +5546,9 @@
 					compute_total_and_average_wall_areas();
 				
 				});
+
+				event_click_wall_factor_transmission_load();
+				event_text_change_wall_factor_transmission_load();
 		
 			}); // firebase.database() for table
 		
