@@ -1,0 +1,233 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="resources/assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="resources/home_assets/img/logo/logo2.png">
+  <title>
+   Envirotherm - Smart Temperature, Cooling Capacity and CO2 Estimation Device
+  </title>
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+  <!-- Nucleo Icons -->
+
+  
+  <link href="resources/assets/css/nucleo-icons.css" rel="stylesheet" />
+  <link href="resources/assets/css/nucleo-svg.css" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  <link href="resources/assets/css/nucleo-svg.css" rel="stylesheet" />
+  <!-- CSS Files -->
+  <link id="pagestyle" href="resources/assets/css/soft-ui-dashboard.css?v=1.0.7" rel="stylesheet" />
+  <!-- Nepcha Analytics (nepcha.com) -->
+  <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
+ 
+
+
+</head>
+
+<body>
+ 
+  
+<main class="main-content  mt-0">
+  <section>
+    <div class="page-header min-vh-45">
+      <div class="container">
+        <div class="row">
+        
+  
+        <div class="col-md-4"></div>
+          <div class="col-md-4">
+            <div class="card card-plain mt-4">
+              <div class="card-header pb-0 text-left bg-transparent text-center">
+                <img class = "mb-3 img_logo" alt = "Enviroterm Logo" src = "resources/home_assets/img/logo/company_logo.png" height = "225px"/>
+                <h3 class="font-weight-bolder text-warning text-gradient">Login</h3>
+              
+              </div>
+              <div class="card-body">
+               
+                  <label>Email</label>
+                  <div class="mb-3">
+                    <input type="email" class="form-control" id = "email_login" placeholder="Email"/>
+                  </div>
+                  <label>Password</label>
+                  <div class="mb-3">
+                    <input type="password" class="form-control" id = "password_login" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
+                  </div>
+
+             
+                 
+                  <div class="text-center">
+                    <button class="btn bg-gradient-warning w-100 mt-4 mb-0 btn_signin" id = "btn_signin">Sign in</button>
+                  </div>
+              
+            
+
+              </div>
+              
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+
+
+
+
+<!-- -------- END FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT ------- -->
+<!--   Core JS Files   -->
+
+<footer class="footer py-1">
+  <div class="container">
+    <div class="row">
+    </div>
+    <div class="row">
+      <div class="col-8 mx-auto text-center mt-1">
+        <p class="mb-0 text-secondary">
+          Copyright © <script>
+            document.write(new Date().getFullYear())
+          </script> <span class = "text-warning">Dev</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+
+ 
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-database-compat.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script type="module">
+
+  // Import the functions you need from the SDKs you need
+  
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.13.0/firebase-app.js";
+  import { getDatabase } from "https://www.gstatic.com/firebasejs/9.13.0/firebase-database.js";
+
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+      import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.13.0/firebase-auth.js";
+      
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyCGY_8bt5XNQCBlxzfm8kLfHW-VnxOaAtQ",
+      authDomain: "esp32-data-1064c.firebaseapp.com",
+      databaseURL: "https://esp32-data-1064c-default-rtdb.firebaseio.com",
+      projectId: "esp32-data-1064c",
+      storageBucket: "esp32-data-1064c.appspot.com",
+      messagingSenderId: "756454158230",
+      appId: "1:756454158230:web:a7a2692dae8d4ac33bf7b7",
+      measurementId: "G-10E8HGZ7H4"
+    };
+
+     // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+    
+    
+  function signin_firebase(email,password){
+
+    signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
+
+        const user = userCredential.user;
+
+        window.location.href = "main.html";
+        
+      }).catch((error) => {
+
+        const error_code = error.code;
+        const error_message = error.message;
+        
+        alert(error_code+" : "+error_message);
+
+      });
+
+  } // signin_firebase
+
+
+
+  var signin = document.getElementById('btn_signin');
+  var password_field = document.getElementById('password_login');
+
+  password_field.addEventListener('keypress',function(keyEvent){
+
+  if(keyEvent.key === 'Enter'){
+
+  var email = document.getElementById('email_login').value;
+  var password = document.getElementById('password_login').value;
+
+  signin_firebase(email,password);
+
+  }
+
+  }); // event when ENTER key pressed on password input field to begin process of login
+
+
+  signin.addEventListener('click',function(){
+
+  var email = document.getElementById('email_login').value;
+  var password = document.getElementById('password_login').value;
+
+  signin_firebase(email,password);
+
+
+  }); // event when signin button is clieked to begin process of login
+
+
+
+ 
+</script>
+
+<script src="resources/assets/js/core/popper.min.js"></script>
+<script src="resources/assets/js/core/bootstrap.min.js"></script>
+<script src="resources/assets/js/plugins/perfect-scrollbar.min.js"></script>
+<script src="resources/assets/js/plugins/smooth-scrollbar.min.js"></script>
+
+<script>
+  var win = navigator.platform.indexOf('Win') > -1;
+  if (win && document.querySelector('#sidenav-scrollbar')) {
+    var options = {
+      damping: '0.5'
+    }
+    Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+  }
+</script>
+
+<!-- Github buttons -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="resources/assets/js/soft-ui-dashboard.min.js?v=1.0.7"></script>
+
+
+</body>
+
+</html>
+
+
+
+
+
+
+
