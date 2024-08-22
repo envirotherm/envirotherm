@@ -591,7 +591,38 @@
 			
 											</div> <!-- row FLOOR Outside Temperature -->
 		
-										
+										<h5 class = "alert alert-info mt-3">
+
+                          <div class="row mt-4">
+                            <div class="col-md-9 d-none transmission_load_account_for_ceiling_display_kwh_day">
+                              TRANSMISSION LOAD - ACCOUNT FOR CEILING<br/><span class = "transmission_load_account_for_ceiling_kwh_day"></span>
+                            </div>
+        
+                            <div class="col-md-9 d-none transmission_load_account_for_ceiling_display_kwh">
+                              TRANSMISSION LOAD - ACCOUNT FOR CEILING<br/><span class = "transmission_load_account_for_ceiling_kwh"></span>
+                            </div>
+                            <div class="col-md-9 d-none transmission_load_account_for_ceiling_display_wh">
+                              TRANSMISSION LOAD - ACCOUNT FOR CEILING<br/><span class = "transmission_load_account_for_ceiling_wh"></span>
+                            </div>
+                            <div class="col-md-9 d-none transmission_load_account_for_ceiling_display_wh_day">
+                              TRANSMISSION LOAD - ACCOUNT FOR CEILING<br/><span class = "transmission_load_account_for_ceiling_wh_day"></span>
+                            </div>
+                            <div class="col-md-9 d-none transmission_load_account_for_ceiling_display_btu_hr">
+                              TRANSMISSION LOAD - ACCOUNT FOR CEILING<br/><span class = "transmission_load_account_for_ceiling_btu_hr"></span>
+                            </div>
+        
+                            <div class="col-md-3">
+                              <select class = "transmission_load_account_for_ceiling_unit_selection mb-4">
+                                <option value = "kwh_day" class = "kwh_day_transmission_load_account_for_ceiling">kWh/Day</option>
+                                <option value = "wh_day" class = "wh_day_transmission_load_account_for_ceiling">Wh/Day</option>
+                                <option value = "kwh" class = "kwh_transmission_load_account_for_ceiling">kWh</option>
+                                <option value = "wh" class = "wh_transmission_load_account_for_ceiling">Wh</option>
+                                <option value = "btu_hr" class = "btu_hr_transmission_load_account_for_ceiling">BTU/Hr</option>
+                              </select>
+                            </div>
+                          </div> <!-- row -->
+        
+                      </h5> <!-- TRANSMISSION LOAD ACCOUNT FOR WALLS AND CEILING -->
 		
 										</div> <!-- alert alert-warning, Transmission Load - Account for Ceiling Inputs -->
 										
@@ -719,7 +750,7 @@
 									
 												
 										<!-- <input type = "number" id = "floor_detected_value" class = "form-control floor_detected_value compute_transmission_load_floor mb-3" placeholder = "Object Detected Value"/> -->
-										<select class = "form-control floor_detected_value compute_transmission_load_floor">
+										<select style="appearance: auto;" class = "mb-3 form-control floor_detected_value compute_transmission_load_floor">
 											<option value = "1.35" class = "kwh_day_transmission_load_floor">(1.35) Cast Concrete</option>
 											<option value = "50" class = "wh_day_transmission_load_floor">(50) Metal Tray (Steel)</option>
 											<option value = "0.41" class = "kwh_transmission_load_floor">(0.41) Screed</option>
@@ -3543,6 +3574,7 @@
 				var transmission_load_total_btu_hr = 0;
 				
 				calculate_transmission_load_account_for_walls_ceiling_total();
+        calculate_transmission_load_account_for_ceiling_total();
 				calculate_transmission_load_account_for_floor_total();
 								
 			
@@ -4195,6 +4227,7 @@
 					compute_total_and_average_wall_areas();
 
 					calculate_transmission_load_account_for_walls_ceiling_total();
+					calculate_transmission_load_account_for_ceiling_total();
 					
 					
 				});
@@ -7111,6 +7144,7 @@
 				compute_total_and_average_wall_areas();
 				compute_walls_ceiling_area();
 				calculate_transmission_load_account_for_walls_ceiling_total();
+        calculate_transmission_load_account_for_ceiling_total();
 				
 			 
 				//calculate_transmission_load_account_for_walls_ceiling_total();
@@ -7141,6 +7175,7 @@
             setInterval(GetLogRecord,0);
 
 			get_conversion_value_and_selection('transmission_load_account_for_walls_ceiling', 'transmission_load_account_for_walls_ceiling', 'transmission_load_account_for_walls_ceiling_unit_selection');
+      get_conversion_value_and_selection('transmission_load_account_for_ceiling', 'transmission_load_account_for_ceiling', 'transmission_load_account_for_ceiling_unit_selection');
 			get_conversion_value_and_selection('transmission_load_account_for_floor', 'transmission_load_floor_total', 'transmission_load_floor_total_unit_selection');
 			get_conversion_value_and_selection('transmission_load_total', 'transmission_load_total', 'transmission_load_total_unit_selection');
 			

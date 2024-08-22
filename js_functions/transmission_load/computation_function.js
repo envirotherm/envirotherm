@@ -130,7 +130,58 @@
 		return transmission_load_wall_ceiling_total;
 
 	} // calculate_transmission_load_account_for_walls_ceiling_total
+
+	function calculate_transmission_load_account_for_ceiling_total(){
+		
+				
+		transmission_load_ceiling_total = 0;
+		var ceiling_object_detected_value = 0;
+		var ceiling_area_value = 0;
+		var ceiling_temp_diff_value = 0;		
+		var u_value_ceiling_final = 0;
+		
+		ceiling_object_detected_value = Number($('.ceiling_detected_value').val());
+		
+		ceiling_area_value = Number($('.overall_ceiling_area').html());
+		
+		u_value_ceiling_final =  ceiling_object_detected_value;
+		
+		//walls_temperature_total = Number($('.overall_wall_area').val());
+		ceiling_temp_diff_value = Number($('.ceiling_outside_temperature').val()) - Number($('.room_temperature_value').val());
+		
+		compute_walls_ceiling_area();
+		transmission_load_ceiling_total = (u_value_ceiling_final * ceiling_area_value * ceiling_temp_diff_value * 24) / 1000;
+		//transmission_load_wall_ceiling_total = (0.41 * 131 * 2.5 * 24) / 1000;
+		// kWh/Day Value
+		
+		// FORMULA FOR TRANMISSION LOAD TOTAL - ACCOUNT FOR WALLS AND CEILING
+		
+		
+		var transmission_load_ceiling_kwh_day = 0;
+		var transmission_load_ceiling_wh_day = 0;
+		var transmission_load_ceiling_kwh = 0;
+		var transmission_load_ceiling_wh = 0;
+		var transmission_load_ceiling_btu_hr = 0;
+		
+		transmission_load_ceiling_kwh_day = transmission_load_ceiling_total;
+		transmission_load_ceiling_wh_day = kwh_day_to_wh_day(transmission_load_ceiling_total);
+		transmission_load_ceiling_kwh = kwh_day_to_kwh(transmission_load_ceiling_total);
+		transmission_load_ceiling_wh = kwh_day_to_wh(transmission_load_ceiling_total);
+		transmission_load_ceiling_btu_hr = kwh_day_to_btu_hr(transmission_load_ceiling_total);
 	
+		//$('.transmission_load_wall_ceiling_total').html(decimal_two_places_format(transmission_load_ceiling_total)+" kWh/Day");
+		$('.transmission_load_account_for_ceiling_kwh_day').html(decimal_two_places_format(transmission_load_ceiling_total)+" kWh/Day");
+		$('.transmission_load_account_for_ceiling_wh_day').html(decimal_two_places_format(transmission_load_ceiling_wh_day)+" Wh/Day");
+		$('.transmission_load_account_for_ceiling_kwh').html(decimal_two_places_format(transmission_load_ceiling_kwh)+" kWh");
+		$('.transmission_load_account_for_ceiling_wh').html(decimal_two_places_format(transmission_load_ceiling_wh)+" Wh");
+		$('.transmission_load_account_for_ceiling_btu_hr').html(decimal_two_places_format(transmission_load_ceiling_btu_hr)+" BTU/Hr");
+		
+		
+		// $('.transmission_load_walls_ceiling').html(decimal_two_places_format(transmission_load_wall_ceiling_total)+" kWh/Day");
+		
+		return transmission_load_ceiling_total;
+
+	} // calculate_transmission_load_account_for_walls_ceiling_total
 	
 	function convert_kwh_btuhr(){
 		
