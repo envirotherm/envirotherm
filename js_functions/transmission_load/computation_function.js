@@ -69,41 +69,44 @@
 
 	function calculate_transmission_load_account_for_walls_ceiling_total(){
 		
+    var wall_load = calculate_transmission_load_account_for_ceiling_total();
+    var ceiling_load = calculate_transmission_load_account_for_walls();
 				
-		transmission_load_ceiling_total = 0;
-		var ceiling_object_detected_value = 0;
-		var wall_object_detected_value = 0;
-		var ceiling_area_value = 0;
-		var walls_area_value = 0;
-		var wall_ceiling_temp_diff_value = 0;
-		var wall_ceiling_area_value = 0;		
-		var u_value_wall_ceiling_final = 0;
+		// transmission_load_ceiling_total = 0;
+		// var ceiling_object_detected_value = 0;
+		// var wall_object_detected_value = 0;
+		// var ceiling_area_value = 0;
+		// var walls_area_value = 0;
+		// var wall_ceiling_temp_diff_value = 0;
+		// var wall_ceiling_area_value = 0;		
+		// var u_value_wall_ceiling_final = 0;
 		
-		ceiling_object_detected_value = Number($('.ceiling_detected_value').val());
-		wall_object_detected_value = Number($('.wall_detected_value').val());
+		// ceiling_object_detected_value = Number($('.ceiling_detected_value').val());
+		// wall_object_detected_value = Number($('.wall_detected_value').val());
 		
-		ceiling_area_value = Number($('.overall_ceiling_area').html());
-		walls_area_value = Number($('.overall_walls_area').html());
-		wall_ceiling_area_value = Number($('.overall_wall_ceiling_area').html());
+		// ceiling_area_value = Number($('.overall_ceiling_area').html());
+		// walls_area_value = Number($('.overall_walls_area').html());
+		// wall_ceiling_area_value = Number($('.overall_wall_ceiling_area').html());
 		
-		if(ceiling_object_detected_value === wall_object_detected_value){
-			u_value_wall_ceiling_final =  wall_object_detected_value;
-		}else{
-			u_value_wall_ceiling_final =  wall_object_detected_value + ceiling_object_detected_value;
-		}
+		// if(ceiling_object_detected_value === wall_object_detected_value){
+		// 	u_value_wall_ceiling_final =  wall_object_detected_value;
+		// }else{
+		// 	u_value_wall_ceiling_final =  wall_object_detected_value + ceiling_object_detected_value;
+		// }
 		
 		
-		//walls_temperature_total = Number($('.overall_wall_area').val());
-		wall_ceiling_temp_diff_value = compute_wall_ceiling_temp_diff();
+		// //walls_temperature_total = Number($('.overall_wall_area').val());
+		// wall_ceiling_temp_diff_value = compute_wall_ceiling_temp_diff();
 		
-		compute_walls_ceiling_area();
+		// compute_walls_ceiling_area();
 		
-		transmission_load_wall_ceiling_total = (u_value_wall_ceiling_final * wall_ceiling_area_value * wall_ceiling_temp_diff_value * 24) / 1000;
-		//transmission_load_wall_ceiling_total = (0.41 * 131 * 2.5 * 24) / 1000;
-		// kWh/Day Value
+		// transmission_load_wall_ceiling_total = (u_value_wall_ceiling_final * wall_ceiling_area_value * wall_ceiling_temp_diff_value * 24) / 1000;
+		// //transmission_load_wall_ceiling_total = (0.41 * 131 * 2.5 * 24) / 1000;
+		// // kWh/Day Value
 		
-		// FORMULA FOR TRANMISSION LOAD TOTAL - ACCOUNT FOR WALLS AND CEILING
+		// // FORMULA FOR TRANMISSION LOAD TOTAL - ACCOUNT FOR WALLS AND CEILING
 		
+    transmission_load_wall_ceiling_total = wall_load + ceiling_load;
 		
 		var transmission_load_walls_ceiling_kwh_day = 0;
 		var transmission_load_walls_ceiling_wh_day = 0;
@@ -182,6 +185,62 @@
 		return transmission_load_ceiling_total;
 
 	} // calculate_transmission_load_account_for_walls_ceiling_total
+
+	function calculate_transmission_load_account_for_walls(){
+		
+		
+		var directions = ['NORTH','EAST','WEST','SOUTH'];
+    var transmission_load_wall_total_all = 0;
+
+    directions.forEach((direction) => {
+
+      var transmission_load_wall_total = 0;
+      var wall_object_detected_value = 0;
+      var wall_area_value = 0;
+      var wall_temp_diff_value = 0;		
+      var u_value_wall_final = 0;
+      
+      wall_object_detected_value = Number($('.wall_detected_value_'+direction).val());
+      
+      wall_area_value = Number($('.wall_area_value_'+direction).val());
+      
+      u_value_wall_final =  wall_object_detected_value;
+      
+      //walls_temperature_total = Number($('.overall_wall_area').val());
+      wall_temp_diff_value = Number($('.wall_outside_temperature_'+direction).val()) - Number($('.room_temperature_value').val());
+      
+      // compute_walls_ceiling_area();
+      transmission_load_wall_total = (u_value_wall_final * wall_area_value * wall_temp_diff_value * 24) / 1000;
+      transmission_load_wall_total_all += transmission_load_wall_total;
+      //transmission_load_wall_total = (0.41 * 131 * 2.5 * 24) / 1000;
+      // kWh/Day Value
+      
+      // FORMULA FOR TRANMISSION LOAD TOTAL - ACCOUNT FOR WALL
+      
+      
+      var transmission_load_wall_kwh_day = 0;
+      var transmission_load_wall_wh_day = 0;
+      var transmission_load_wall_kwh = 0;
+      var transmission_load_wall_wh = 0;
+      var transmission_load_wall_btu_hr = 0;
+      
+      transmission_load_wall_kwh_day = transmission_load_wall_total;
+      transmission_load_wall_wh_day = kwh_day_to_wh_day(transmission_load_wall_total);
+      transmission_load_wall_kwh = kwh_day_to_kwh(transmission_load_wall_total);
+      transmission_load_wall_wh = kwh_day_to_wh(transmission_load_wall_total);
+      transmission_load_wall_btu_hr = kwh_day_to_btu_hr(transmission_load_wall_total);
+    
+      $('.transmission_load_account_for_wall_'+direction+'_kwh_day').html(decimal_two_places_format(transmission_load_wall_total)+" kWh/Day");
+      $('.transmission_load_account_for_wall_'+direction+'_wh_day').html(decimal_two_places_format(transmission_load_wall_wh_day)+" Wh/Day");
+      $('.transmission_load_account_for_wall_'+direction+'_kwh').html(decimal_two_places_format(transmission_load_wall_kwh)+" kWh");
+      $('.transmission_load_account_for_wall_'+direction+'_wh').html(decimal_two_places_format(transmission_load_wall_wh)+" Wh");
+      $('.transmission_load_account_for_wall_'+direction+'_btu_hr').html(decimal_two_places_format(transmission_load_wall_btu_hr)+" BTU/Hr");
+    });
+
+		return transmission_load_wall_total_all;
+
+	}
+	
 	
 	function convert_kwh_btuhr(){
 		

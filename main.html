@@ -3574,7 +3574,6 @@
 				var transmission_load_total_btu_hr = 0;
 				
 				calculate_transmission_load_account_for_walls_ceiling_total();
-        calculate_transmission_load_account_for_ceiling_total();
 				calculate_transmission_load_account_for_floor_total();
 								
 			
@@ -4139,7 +4138,8 @@
 					var one_field = "wall_object_detected_value";
 					var value_string = rel;
 
-					update_record_one_field_all_rows(table, one_field, value_string);
+					// update_record_one_field_all_rows(table, one_field, value_string);
+          update_record_one_field(table,one_field, id, value_string);
 					compute_total_and_average_wall_areas();
 
 				});
@@ -4227,7 +4227,6 @@
 					compute_total_and_average_wall_areas();
 
 					calculate_transmission_load_account_for_walls_ceiling_total();
-					calculate_transmission_load_account_for_ceiling_total();
 					
 					
 				});
@@ -4238,14 +4237,14 @@
 			function event_text_change_wall_factor_transmission_load(){
 
 				$('.wall_detected_value').on('keyup',function(){
-					// var id = $(this).attr('rel');
+					var id = $(this).attr('rel');
 					var rel = $(this).val();
-					console.log(rel)
 					var table = "transmission_load_wall_areas";
 					var one_field = "wall_object_detected_value";
 					var value_string = rel;
 
-					update_record_one_field_all_rows(table, one_field, value_string);
+					// update_record_one_field_all_rows(table, one_field, value_string);
+          update_record_one_field(table,one_field, id, value_string);
 					compute_total_and_average_wall_areas();
 
 				});
@@ -5352,7 +5351,6 @@
 				var log_status_id = snapshot.key;
 		
 				snapshot.forEach(function(snapshot_fields){
-		
 					var id = snapshot_fields.key;
 					var wall_area_name = snapshot_fields.val().wall_area_name;
 					var wall_length = snapshot_fields.val().wall_length;
@@ -5403,7 +5401,7 @@
 							wall_area_input += '</div>';
 							
 							wall_area_input += '<div class = "col-md-2">';
-								wall_area_input += '<input type = "number" value = "'+wall_area+'" disabled = "true" class = "form-control wall_area_value_'+id+' my-1" rel = "'+id+'" placeholder = "Area">';
+								wall_area_input += '<input type = "number" value = "'+wall_area+'" disabled = "true" class = "form-control wall_area_value_'+wall_direction+' wall_area_value_'+id+' my-1" rel = "'+id+'" placeholder = "Area">';
 							wall_area_input += '</div>';							
 							
 						wall_area_input += '</div>';
@@ -5418,7 +5416,7 @@
 							wall_area_input += '</div>';
 							
 							wall_area_input += '<div class = "col-md-2">'
-								wall_area_input += '<input type = "number" value = "'+wall_outside_temperature+'" class = "form-control wall_outside_temperature wall_outside_temperature_'+id+' my-1" rel = "'+id+'" placeholder = "Outside Temperature">';
+								wall_area_input += '<input type = "number" value = "'+wall_outside_temperature+'" class = "form-control wall_outside_temperature wall_outside_temperature_'+wall_direction+' wall_outside_temperature_'+id+' my-1" rel = "'+id+'" placeholder = "Outside Temperature">';
 							wall_area_input += '</div>';
 							
 							wall_area_input += '<div class = "col-md-2">'
@@ -5443,7 +5441,7 @@
 							wall_area_input += '</div>';
 							
 							wall_area_input += '<div class = "col-md-4">'
-								wall_area_input += '<input type = "number" id="wall_detected_value" rel = "'+id+'" value = "'+wall_object_detected_value+'" class = "form-control wall_detected_value wall_field_object_detected_value_'+id+' my-1" placeholder = "Object Detection Value">';
+								wall_area_input += '<input type = "number" id="wall_detected_value" rel = "'+id+'" value = "'+wall_object_detected_value+'" class = "form-control wall_detected_value wall_detected_value_'+wall_direction+' wall_field_object_detected_value_'+id+' my-1" placeholder = "Object Detection Value">';
 							wall_area_input += '</div>';
 
 							wall_area_input += '<div class = "col-md-4">'
@@ -5451,6 +5449,39 @@
 							wall_area_input += '</div>';
 		
 						wall_area_input += '</div>';
+
+            wall_area_input += '<h5 class = "alert alert-info mt-3">';
+
+              wall_area_input += '<div class="row mt-4">';
+                wall_area_input += '<div class="col-md-9 d-none transmission_load_account_for_wall_'+wall_direction+'_display_kwh_day">';
+                  wall_area_input += 'TRANSMISSION LOAD - ACCOUNT FOR WALL '+wall_direction+' <br/><span class = "transmission_load_account_for_wall_'+wall_direction+'_kwh_day"></span>';
+                wall_area_input += '</div>';
+
+                wall_area_input += '<div class="col-md-9 d-none transmission_load_account_for_wall_'+wall_direction+'_display_kwh">';
+                  wall_area_input += 'TRANSMISSION LOAD - ACCOUNT FOR WALL '+wall_direction+'<br/><span class = "transmission_load_account_for_wall_'+wall_direction+'_kwh"></span>';
+                wall_area_input += '</div>';
+                wall_area_input += '<div class="col-md-9 d-none transmission_load_account_for_wall_'+wall_direction+'_display_wh">';
+                  wall_area_input += 'TRANSMISSION LOAD - ACCOUNT FOR WALL '+wall_direction+'<br/><span class = "transmission_load_account_for_wall_'+wall_direction+'_wh"></span>';
+                wall_area_input += '</div>';
+                wall_area_input += '<div class="col-md-9 d-none transmission_load_account_for_wall_'+wall_direction+'_display_wh_day">';
+                  wall_area_input += 'TRANSMISSION LOAD - ACCOUNT FOR WALL '+wall_direction+'<br/><span class = "transmission_load_account_for_wall_'+wall_direction+'_wh_day"></span>';
+                wall_area_input += '</div>';
+                wall_area_input += '<div class="col-md-9 d-none transmission_load_account_for_wall_'+wall_direction+'_display_btu_hr">';
+                  wall_area_input += 'TRANSMISSION LOAD - ACCOUNT FOR WALL '+wall_direction+'<br/><span class = "transmission_load_account_for_wall_'+wall_direction+'_btu_hr"></span>';
+                wall_area_input += '</div>';
+
+                wall_area_input += '<div class="col-md-3">';
+                  wall_area_input += '<select class = "transmission_load_account_for_wall_'+wall_direction+'_unit_selection mb-4">';
+                    wall_area_input += '<option value = "kwh_day" class = "kwh_day_transmission_load_account_for_wall_'+wall_direction+'">kWh/Day</option>';
+                    wall_area_input += '<option value = "wh_day" class = "wh_day_transmission_load_account_for_wall_'+wall_direction+'">Wh/Day</option>';
+                    wall_area_input += '<option value = "kwh" class = "kwh_transmission_load_account_for_wall_'+wall_direction+'">kWh</option>';
+                    wall_area_input += '<option value = "wh" class = "wh_transmission_load_account_for_wall_'+wall_direction+'">Wh</option>';
+                    wall_area_input += '<option value = "btu_hr" class = "btu_hr_transmission_load_account_for_wall_'+wall_direction+'">BTU/Hr</option>';
+                  wall_area_input += '</select>';
+                wall_area_input += '</div>';
+              wall_area_input += '</div>';
+
+            wall_area_input += '</h5>';
 							
 							wall_area_input += '<div class = "col-md-1 d-none">';
 								wall_area_input += '<button type = "button" rel = "'+id+'" class = "btn btn-xs btn-warning remove_wall_area my-1">Remove</button>';
@@ -5478,10 +5509,9 @@
 							wall_area_input += '</div>';
 						wall_area_input += '</div>';
 					wall_area_input += '</div>';
-		
-				});
-				
-				$('.'+div_to_fill+'').html(wall_area_input);
+          $('.'+div_to_fill+'').html(wall_area_input);
+          get_conversion_value_and_selection('transmission_load_account_for_wall_'+wall_direction, 'transmission_load_account_for_wall_'+wall_direction, 'transmission_load_account_for_wall_'+wall_direction+'_unit_selection');
+        });
 				
 		
 				
@@ -6624,89 +6654,90 @@
                 
                 }); // firebase.database() for table				
 				
+				setTimeout(() => {
+          $('.'+div_class_unit_selection+'').on('change',function(){
 				
-				$('.'+div_class_unit_selection+'').on('change',function(){
-				
-					var unit_value = $(this).val();
-					
-					var base_value = 0;
-					var unit_label = "kWh/Day";
-						
-					switch(unit_value){
-					
-							case 'kwh_day':
-								
-								$('.'+div_class_show+'_display_wh').addClass('d-none');
-								$('.'+div_class_show+'_display_wh_day').addClass('d-none');
-								$('.'+div_class_show+'_display_btu_hr').addClass('d-none');
-								$('.'+div_class_show+'_display_kwh').addClass('d-none');
-								$('.'+div_class_show+'_display_kwh_day').removeClass('d-none');						
-								
-							break;
-							
-							case 'wh':							
-								
-								$('.'+div_class_show+'_display_wh_day').addClass('d-none');
-								$('.'+div_class_show+'_display_btu_hr').addClass('d-none');
-								$('.'+div_class_show+'_display_kwh').addClass('d-none');
-								$('.'+div_class_show+'_display_kwh_day').addClass('d-none');	
-								$('.'+div_class_show+'_display_wh').removeClass('d-none');
-							
-							break;
-							
-							case 'kwh':								
-								
-							
-								$('.'+div_class_show+'_display_wh').addClass('d-none');
-								$('.'+div_class_show+'_display_wh_day').addClass('d-none');
-								$('.'+div_class_show+'_display_btu_hr').addClass('d-none');
-								$('.'+div_class_show+'_display_kwh_day').addClass('d-none');	
-								$('.'+div_class_show+'_display_kwh').removeClass('d-none');								
-							
-							
-							break;
-							
-							case 'wh_day':								
-								
-								$('.'+div_class_show+'_display_kwh').addClass('d-none');
-								$('.'+div_class_show+'_display_wh').addClass('d-none');								
-								$('.'+div_class_show+'_display_btu_hr').addClass('d-none');
-								$('.'+div_class_show+'_display_kwh_day').addClass('d-none');	
-								$('.'+div_class_show+'_display_wh_day').removeClass('d-none');								
-								
-							break;
-							
-							case 'btu_hr':
-							
-								$('.'+div_class_show+'_display_wh').addClass('d-none');
-								$('.'+div_class_show+'_display_wh_day').addClass('d-none');								
-								$('.'+div_class_show+'_display_kwh').addClass('d-none');
-								$('.'+div_class_show+'_display_kwh_day').addClass('d-none');	
-								$('.'+div_class_show+'_display_btu_hr').removeClass('d-none');
-							
-							break;
-							
-							default:
-							
-									
-								$('.'+div_class_show+'_display_wh').addClass('d-none');
-								$('.'+div_class_show+'_display_wh_day').addClass('d-none');
-								$('.'+div_class_show+'_display_btu_hr').addClass('d-none');
-								$('.'+div_class_show+'_display_kwh').addClass('d-none');
-								$('.'+div_class_show+'_display_kwh_day').addClass('d-none');						
-								
-										
-								
-							break;
-					}
-                        	
-					update_record_one_field(table,field_get,'current_input_1',unit_value);
+          var unit_value = $(this).val();
+          
+          var base_value = 0;
+          var unit_label = "kWh/Day";
+            
+          switch(unit_value){
+          
+              case 'kwh_day':
+                
+                $('.'+div_class_show+'_display_wh').addClass('d-none');
+                $('.'+div_class_show+'_display_wh_day').addClass('d-none');
+                $('.'+div_class_show+'_display_btu_hr').addClass('d-none');
+                $('.'+div_class_show+'_display_kwh').addClass('d-none');
+                $('.'+div_class_show+'_display_kwh_day').removeClass('d-none');						
+                
+              break;
+              
+              case 'wh':							
+                
+                $('.'+div_class_show+'_display_wh_day').addClass('d-none');
+                $('.'+div_class_show+'_display_btu_hr').addClass('d-none');
+                $('.'+div_class_show+'_display_kwh').addClass('d-none');
+                $('.'+div_class_show+'_display_kwh_day').addClass('d-none');	
+                $('.'+div_class_show+'_display_wh').removeClass('d-none');
+              
+              break;
+              
+              case 'kwh':								
+                
+              
+                $('.'+div_class_show+'_display_wh').addClass('d-none');
+                $('.'+div_class_show+'_display_wh_day').addClass('d-none');
+                $('.'+div_class_show+'_display_btu_hr').addClass('d-none');
+                $('.'+div_class_show+'_display_kwh_day').addClass('d-none');	
+                $('.'+div_class_show+'_display_kwh').removeClass('d-none');								
+              
+              
+              break;
+              
+              case 'wh_day':								
+                
+                $('.'+div_class_show+'_display_kwh').addClass('d-none');
+                $('.'+div_class_show+'_display_wh').addClass('d-none');								
+                $('.'+div_class_show+'_display_btu_hr').addClass('d-none');
+                $('.'+div_class_show+'_display_kwh_day').addClass('d-none');	
+                $('.'+div_class_show+'_display_wh_day').removeClass('d-none');								
+                
+              break;
+              
+              case 'btu_hr':
+              
+                $('.'+div_class_show+'_display_wh').addClass('d-none');
+                $('.'+div_class_show+'_display_wh_day').addClass('d-none');								
+                $('.'+div_class_show+'_display_kwh').addClass('d-none');
+                $('.'+div_class_show+'_display_kwh_day').addClass('d-none');	
+                $('.'+div_class_show+'_display_btu_hr').removeClass('d-none');
+              
+              break;
+              
+              default:
+              
+                  
+                $('.'+div_class_show+'_display_wh').addClass('d-none');
+                $('.'+div_class_show+'_display_wh_day').addClass('d-none');
+                $('.'+div_class_show+'_display_btu_hr').addClass('d-none');
+                $('.'+div_class_show+'_display_kwh').addClass('d-none');
+                $('.'+div_class_show+'_display_kwh_day').addClass('d-none');						
+                
+                    
+                
+              break;
+          }
+                          
+          update_record_one_field(table,field_get,'current_input_1',unit_value);
                         
-							
-							
-			
-					
-				});
+              
+              
+      
+          
+          });
+        });
 
 
             } // get_conversion_value_and_selection
@@ -7144,7 +7175,6 @@
 				compute_total_and_average_wall_areas();
 				compute_walls_ceiling_area();
 				calculate_transmission_load_account_for_walls_ceiling_total();
-        calculate_transmission_load_account_for_ceiling_total();
 				
 			 
 				//calculate_transmission_load_account_for_walls_ceiling_total();
